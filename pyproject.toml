@@ -1,19 +1,18 @@
-[project]
-name = "pydantic-tooltypes"
-version = "0.1.0"
-description = "TypeScript-like utilities for Pydantic models: Partial, Pick, Omit, Required"
-authors = [
-    {name = "Juan Marcelo Panasiti",email = "juanpanasiti@gmail.com"}
-]
-readme = "README.md"
-requires-python = ">=3.10"
-dependencies = [
-    "pydantic (>=2.0,<3.0)"
-]
-
 [tool.poetry]
+name = "pydantic-tooltypes"
+version = "0.1.1"
+description = "TypeScript-like utilities for Pydantic models: Partial, Pick, Omit, Required"
+authors = ["Juan Marcelo Panasiti <juanpanasiti@gmail.com>"]
+license = "MIT"
+readme = "README.md"
 packages = [{include = "pydantic_tooltypes", from = "src"}]
+keywords = ["pydantic", "partial", "typescript", "model", "schema", "utils"]
+homepage = "https://github.com/juanpanasiti/pydantic-tooltypes"
+repository = "https://github.com/juanpanasiti/pydantic-tooltypes"
 
+[tool.poetry.dependencies]
+python = ">=3.10"
+pydantic = ">=2.0,<3.0"
 
 [tool.poetry.group.dev.dependencies]
 pytest = "^8.3.5"
