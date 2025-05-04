@@ -4,7 +4,7 @@ from pydantic_tooltypes import Partial
 
 from .models import User
 
-PartialUser = Partial(User)
+PartialUser = Partial[User]
 
 
 def test_partial_fields_are_optional():

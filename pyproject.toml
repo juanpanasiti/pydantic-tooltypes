@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "pydantic-tooltypes"
-version = "0.1.1"
+version = "0.2.0"
 description = "TypeScript-like utilities for Pydantic models: Partial, Pick, Omit, Required"
 authors = ["Juan Marcelo Panasiti <juanpanasiti@gmail.com>"]
 license = "MIT"

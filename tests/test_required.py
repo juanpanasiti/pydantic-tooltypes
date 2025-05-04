@@ -7,7 +7,7 @@ from .models import User
 from .test_partial import PartialUser
 
 REQUIRED_KEYS: list[str] = ['email']
-RequiredUser = Required(PartialUser, keys=REQUIRED_KEYS)
+RequiredUser = Required[PartialUser, REQUIRED_KEYS]
 
 
 def test_required_default_name():

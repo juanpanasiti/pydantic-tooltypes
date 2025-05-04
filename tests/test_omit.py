@@ -6,7 +6,7 @@ from pydantic_tooltypes import Omit
 from .models import User
 
 OMIT_KEYS: list[str] = ['id']
-OmitUser = Omit(User, keys=OMIT_KEYS)
+OmitUser = Omit[User, OMIT_KEYS]
 
 
 def test_omit_default_name():

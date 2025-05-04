@@ -1,22 +1,25 @@
-from typing import get_type_hints
+from typing import Any, Type, get_type_hints
 from pydantic import BaseModel, create_model
 
-
-def Pick(base_model: type[BaseModel], keys: list[str], name: str | None = None) -> type[BaseModel]:
+class Pick:
     """
-    Creates a new Pydantic model by selecting a subset of fields from the given base model.
+    A utility to create a new Pydantic model including only the specified fields.
 
-    Args:
-        base_model (type[BaseModel]): The original Pydantic model to pick fields from.
-        keys (list[str]): A list of field names to include in the new model.
-        name (str | None, optional): The name of the new model. Defaults to 'Pick{BaseModelName}'.
+    Example:
+        PickUser = Pick[User, ['email']]
 
-    Returns:
-        type[BaseModel]: A new Pydantic model including only the specified fields, all required.
+    This returns a new model with only the 'email' field from the User model.
     """
-    name = name or f'Pick{base_model.__name__}'
-    annotations = get_type_hints(base_model, include_extras=True)
 
-    fields = {k: (annotations[k], ...)for k in keys if k in annotations}
+    def __class_getitem__(cls, params: tuple[Type[BaseModel], list[str]]) -> Type[BaseModel]:
+        base_model, keys = params
+        name = f'Pick{base_model.__name__}'
+        annotations = get_type_hints(base_model, include_extras=True)
 
-    return create_model(name, __base__=BaseModel, **fields)
+        fields = {
+            k: (annotation, ...)
+            for k, annotation in annotations.items()
+            if k in keys
+        }
+
+        return create_model(name, __base__=BaseModel, **fields)

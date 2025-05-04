@@ -1,28 +1,24 @@
-from typing import get_type_hints
+from typing import Any, Type, get_type_hints
 from pydantic import BaseModel, create_model
 
-
-def Required(base_model: type[BaseModel], keys: list[str], name: str | None = None) -> type[BaseModel]:
+class Required:
     """
-    Creates a new Pydantic model from the base model, making only the specified fields required
-    while keeping all other fields optional.
+    A utility to make specific fields required in a (possibly partially optional) Pydantic model.
 
-    Args:
-        base_model (type[BaseModel]): The original Pydantic model to derive from.
-        keys (list[str]): The list of field names that should be required in the new model.
-        name (str | None, optional): The name of the new model. Defaults to 'Required{BaseModelName}'.
+    Example:
+        RequiredUser = Required[PartialUser, ['email']]
 
-    Returns:
-        type[BaseModel]: A new Pydantic model with selected required fields.
+    This returns a model where 'email' is required again, even if the base model made it optional.
     """
-    name = name or f'Required{base_model.__name__}'
-    annotations = get_type_hints(base_model, include_extras=True)
 
-    fields = {}
-    for k, annotation in annotations.items():
-        if k in keys:
-            fields[k] = (annotation, ...)
-        else:
-            fields[k] = (annotation, None)
+    def __class_getitem__(cls, params: tuple[Type[BaseModel], list[str]]) -> Type[BaseModel]:
+        base_model, keys = params
+        name = f'Required{base_model.__name__}'
+        annotations = get_type_hints(base_model, include_extras=True)
 
-    return create_model(name, __base__=BaseModel, **fields)
+        fields = {
+            k: (annotation, ...) if k in keys else (annotation, None)
+            for k, annotation in annotations.items()
+        }
+
+        return create_model(name, __base__=BaseModel, **fields)

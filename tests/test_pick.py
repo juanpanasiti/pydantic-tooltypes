@@ -6,7 +6,7 @@ from pydantic_tooltypes import Pick
 from .models import User
 
 PICK_KEYS: list[str] = ['email']
-PickUser = Pick(User, keys=PICK_KEYS)
+PickUser = Pick[User, PICK_KEYS]
 
 
 def test_pick_default_name():

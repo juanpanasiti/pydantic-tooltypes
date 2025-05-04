@@ -9,6 +9,8 @@ TypeScript-like utilities for Pydantic models: `Partial`, `Pick`, `Omit`, and `R
 - `Omit`: Removes a subset of fields from a model.
 - `Required`: Makes selected fields required, others optional.
 
+All utilities now support **class parametrization**, similar to generics in TypeScript or Python typing.
+
 ## Installation
 
 ```bash
@@ -25,10 +27,17 @@ class User(BaseModel):
     id: int
     email: str
 
-PartialUser = Partial(User)
-PickUser = Pick(User, keys=['email'])
-OmitUser = Omit(User, keys=['id'])
-RequiredUser = Required(PartialUser, keys=['email'])
+# Partial: all fields optional
+PartialUser = Partial[User]
+
+# Pick: only selected fields included (and required)
+PickUser = Pick[User, ['email']]
+
+# Omit: all except the listed fields (the rest are required)
+OmitUser = Omit[User, ['id']]
+
+# Required: make some fields required over a Partial model
+RequiredUser = Required[PartialUser, ['email']]
 ```
 
 ## License
